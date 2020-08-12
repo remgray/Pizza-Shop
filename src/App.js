@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import {Header, Content} from "./components";
+import axios from 'axios';
+import {Route} from "react-router-dom";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [pizzas, setPizzas] = useState([]);
+
+	useEffect(() => {
+		axios.get('https://raw.githubusercontent.com/Archakov06/react-pizza/master/public/db.json')
+		 	.then(response => {setPizzas(response.data.pizzas)})
+	}, []);
+
+	return (
+		<div className="App">
+			<div className="wrapper">
+				 <Header/>
+				<div className="content">
+					<Route path={'/'} render={() => <Content items={pizzas}/>}  exact/>
+				</div>
+			</div>
+		</div>
+	);
 }
 
 export default App;
