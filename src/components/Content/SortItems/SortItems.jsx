@@ -31,21 +31,21 @@ const SortItems = ({items}) => {
 				</svg>
 				<b>Сортировка по:</b>
 				<span
-					onClick={() => togglePopup(activePopup)}>{items[activeItem]}</span>
+					onClick={() => togglePopup(activePopup)}>{items[activeItem].name}</span>
 			</div>
 			{activePopup &&
 				<div className="sort__popup">
 				<ul>
 					{items &&
-					items.map((item, index) => (
+					items.map((obj, index) => (
 						<li
 							className={activeItem === index ? 'active' : ''}
 							onClick={() => {
 								setActiveItem(index);
 								setActivePopup(false);
 							}}
-							key={`${item}_${index}`}
-						>{item}</li>
+							key={`${obj.type}_${index}`}
+						>{obj.name}</li>
 					))}
 				</ul>
 			</div>}

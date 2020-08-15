@@ -3,11 +3,14 @@ import {Categories, SortItems, PizzaBlock} from "../index";
 
 
 export const Content = ({items}) => {
-	return(
+	return (
 		<div className="container">
 			<div className="content__top">
-				<Categories items={['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']} />
-				<SortItems items={['популярности', 'цене', 'алфавиту']} />
+				<Categories items={['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']}/>
+				<SortItems items={[
+					{type: 'popular', name: 'популярности'},
+					{type: 'price', name: 'цене'},
+					{type: 'alphabet', name: 'алфавиту'}]}/>
 			</div>
 			<h2 className="content__title">Все пиццы</h2>
 			<div className="content__items">
