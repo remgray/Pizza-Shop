@@ -1,15 +1,25 @@
 import React, {useEffect, useRef, useState} from "react";
+import PropTypes from "prop-types";
 
-const SortItems = ({items}) => {
-	const [activeItem, setActiveItem] = useState(0);
+
+
+const SortItems = React.memo(function SortItems({items, onClickSortType, activeSortType}) {
 	const [activePopup, setActivePopup] = useState(false);
-
+	const activeLabel = items.find(obj => obj.type === activeSortType).name;
 	const togglePopup = (activePopup) => {
 		setActivePopup(() => !activePopup);
 	};
 
-	const outsidePopupClick = (e) => {
-		if (!e.path.includes(sortRef.current)) setActivePopup(false);
+	const outsidePopupClick = (event) => {
+		let path = event.path || (event.composedPath && event.composedPath());
+		if (!path.includes(sortRef.current)) setActivePopup(false);
+	}
+
+	const onSelectItem = (index) => {
+		if (onClickSortType) {
+			onClickSortType(index);
+		}
+		setActivePopup(false);
 	}
 
 	const sortRef = useRef();
@@ -31,19 +41,16 @@ const SortItems = ({items}) => {
 				</svg>
 				<b>Сортировка по:</b>
 				<span
-					onClick={() => togglePopup(activePopup)}>{items[activeItem].name}</span>
+					onClick={() => togglePopup(activePopup)}>{activeLabel}</span>
 			</div>
 			{activePopup &&
-				<div className="sort__popup">
+			<div className="sort__popup">
 				<ul>
 					{items &&
 					items.map((obj, index) => (
 						<li
-							className={activeItem === index ? 'active' : ''}
-							onClick={() => {
-								setActiveItem(index);
-								setActivePopup(false);
-							}}
+							className={activeSortType === obj.type ? 'active' : ''}
+							onClick={() => onSelectItem(obj)}
 							key={`${obj.type}_${index}`}
 						>{obj.name}</li>
 					))}
@@ -51,7 +58,16 @@ const SortItems = ({items}) => {
 			</div>}
 		</div>
 	)
-}
+})
 
+SortItems.propTypes = {
+	items: PropTypes.arrayOf(PropTypes.object).isRequired,
+	activeSortType: PropTypes.string.isRequired,
+	onClickSortType: PropTypes.func.isRequired
+};
+
+SortItems.defaultProps = {
+	items: []
+}
 
 export default SortItems;
