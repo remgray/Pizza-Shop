@@ -1,14 +1,16 @@
 import React from "react";
 import classNames from 'classnames';
 
-const HeaderButton = ({children, onClick}) => {
+const Button = ({children, className, outline, onClick}) => {
 	return(
 		// <a href="/cart.html" className="button button--cart"></a>
 		<button
 		onClick={onClick}
-		className={classNames('button', 'button--cart')}
+		className={classNames('button', className, {
+			'button--outline': outline,
+		})}
 		>{children}</button>
 	)
 }
 
-export default HeaderButton;
+export default Button;
